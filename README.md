@@ -33,6 +33,11 @@ The structure of this module is composed by:
 ## How to use this project
 
 ### Initial setup
+1. Your AWS credentials should be stored at the `~/.aws/credentials`. You can choose to create it manually or you can install `awscli` from `pip`, run the command `aws configure` and answer the questions to properly configure this file;
+2. The IAM Role defined with proper accesses. For simplicity purposes, I decided to use my root AWS account with `Admin` rights in order to avoid any further issues with IAM Roles;
+3. Terraform installed;
+4. (Optional) The microservices should be built in your machine. In order to build it, follow the steps in this [git repository section](https://github.com/ThoughtWorksInc/infra-problem#building);
+5. (Optional) Once you build, copy each artifact to the proper microservice folder, it should be at the same level as your Dockerfile;
 
 ### Running the Terraform modules
 To deploy the k8s cluster together with the application deployments, you should follow the very straight forward steps:
@@ -71,5 +76,6 @@ terraform plan -out deployment.plan && terraform apply
 ```
 This will trigger the redeployment of the Docker image containing the newer version of the application.
 ## Challenges faced
-
-## Design decisions
+* First and most pleasent was the lack of knowledge in Kubernetes, which I'd tried to learn in less than 3 days. Loved this part of this challenge;
+* Initially I've built a set of EC2 instances in order to then, deploy the Kubernetes cluster. With almost zero experience with k8s, this seemed to be a stupid decision after a few hours trying to find the proper solution, then I decided to use AWS EKS due to it's "simplicity" to deploy a self-managed k8s cluster;
+* Properly inject the needed environment variables into the `frontend` microservice as the k8s cluster would spin the deployments by its own dynamic configuration. Then after some search in Google, I figured out the k8s way to do it by using `ConfigMap`.
