@@ -43,11 +43,11 @@ Login to Docker Hub from the command line by issuing:
 ```bash
 docker login
 ```  
-Provide your login information. After logging in, just push the new image to the command:  
+Provide your login information. After logging in, just push the new image to the Docker Hub with the command:  
 ```bash
 docker push username/imagename:0.2
 ```
-4. Now its time to update the Terraform deployment manifesto by changing the image name in the file `application/deployments.yml`. Change the image value at line 27 to the newer image.
+4. Now its time to update the Terraform deployment manifesto by changing the image name in the file `application/deployments.tf`. Change the image value at line 27 to the newer image.
 5. Finally apply the changes to the cluster by running:
 ```bash
 terraform plan -out deployment.plan && terraform apply
