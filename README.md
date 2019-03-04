@@ -35,6 +35,10 @@ The structure of this module is composed by:
 ### Initial setup
 
 ### Running the Terraform modules
+To deploy the k8s cluster together with the application deployments, you should follow the very straight forward steps:
+* cd to the terraform folder where you will find the `main.tf` file that will trigger the subsequent modules;
+* Run the command `terraform init` followed by `terraform plan -out yourfile.plan`. These commands will initiate the Terraform and will check the state of your infrastructure against the manifestos contained in this folder. At your first run, it will not find any terraform state file to compare with your Cloud infrastructure;
+* Run `terraform apply` to have your k8s cluster deployed and then your applications rolledout in the next step, be aware that initial setup will take several minutes (something between 10min to 15min).
 
 ### How to update the applications
 
