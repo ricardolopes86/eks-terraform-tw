@@ -12,10 +12,23 @@ The infrastructure will be provisioned using AWS EKS for a faster Kubernetes (k8
 
 Here you will find 2 Terraform modules: `eks-cluster` and `application`. The first one is intended to deploy the whole K8s cluster at EKS and the second should deploy the application.
 
-### eks-cluster
+### eks-cluster  
+The structure of this module is composed by:  
+`eks-cluster.tf` - configure the EKS cluster;  
+`eks-worker-nodes.tf` - configure the worker nodes;  
+`outputs.tf` - will print out the configuration of the kubeconfig file together with the iam-was-authenticator;   
+`providers.tf` - the configuration related to the Cloud provider, in our example it is AWS;   
+`variables.tf` - all variables used in the files in order to simplify the referrences;  
+`vpc.tf` - configure the necessary VPC (Virtual Private Cloud) to our k8s cluster;  
+`workstation-external-ip.tf` - in order to be able to run kubectl commands, this file will add the proper configuration to allow outbound connections.   
+This code was **explicitly copied** from the working example at the Terraform [github](https://github.com/terraform-providers/terraform-provider-aws/tree/master/examples/eks-getting-started) page. I just changed to reflect my configurations.
 
 
 ### application
+The structure of this module is composed by:  
+`deployments.tf` - The k8s deployments configuration is here;  
+`provider.tf` - here we have the configuration for the k8s provider for this module;  
+`variables.tf` - and the variables used accross this module.
 
 ## How to use this project
 
