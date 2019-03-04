@@ -29,8 +29,8 @@ resource "kubernetes_config_map" "frontend" {
   }
 
   data {
-    QUOTE_SERVICE_URL = ""
-    NEWSFEED_SERVICE_URL = ""
+    QUOTE_SERVICE_URL = "${kubernetes_deployment.quotes}"
+    NEWSFEED_SERVICE_URL = "${kubernetes_deployment.quotes}"
   }
 
   depends_on = ["kubernetes_namespace.demo_app"]
