@@ -6,7 +6,7 @@ provider "kubernetes" {
 }
 
 # Create the NameSpace where the application will run
-resource "kubernetes_namespace" "demo_app" {
+resource "kubernetes_namespace" "microservices_app" {
   metadata {
     name = "${var.app_ns_name}"
 
@@ -29,9 +29,24 @@ resource "kubernetes_config_map" "frontend" {
   }
 
   data {
-    QUOTE_SERVICE_URL = "${kubernetes_deployment.quotes}"
-    NEWSFEED_SERVICE_URL = "${kubernetes_deployment.quotes}"
+    QUOTE_SERVICE_URL = "${kubernetes_service.quotes_app.metadata.0.self_link}"
+    NEWSFEED_SERVICE_URL = "${kubernetes_service.newsfeed_app.metadata.0.self_link}"
   }
 
-  depends_on = ["kubernetes_namespace.demo_app"]
+  depends_on = ["kubernetes_namespace.microservices_app"]
+}
+
+resource "kubernetes_secret" "newsfeed-secret" {
+  metadata {
+    name = "newsfeed-secret"
+  }
+
+  namespace = "${kubernetes_namespace.microservices_app.metadata.name}"
+  labels {
+    app = "${var.app_label}"
+  }
+
+  data {
+    NEWSFEED_SERVICE_TOKEN="T1&eWbYXNWG1w1^YGKDPxAWJ@^et^&kX"
+  }
 }

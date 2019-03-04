@@ -19,3 +19,7 @@ variable "frontend_port" {
 variable "quotes_port" {
   default = 8081
 }
+
+variable "static_port" {
+  default = 8000
+}
