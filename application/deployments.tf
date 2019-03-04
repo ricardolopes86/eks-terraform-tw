@@ -98,12 +98,43 @@ resource "kubernetes_deployment" "frontend" {
           name  = "frontend"
 
         }
-        env {
-          STATIC_URL="${kubernetes_service.static_app.metadata.0.ip}:${var.static_port}"
-          NEWSFEED_SERVICE_TOKEN="${kubernetes_secret.newsfeed-secret}"
-          QUOTE_SERVICE_URL = "${kubernetes_service.quotes_app.metadata.0.ip}${var.quotes_port}"
-          NEWSFEED_SERVICE_URL = "${kubernetes_service.newsfeed_app.metadata.0.ip}${var.newsfeed_port}"
-        }
+        env = [
+        {
+          name = "STATIC_URL"
+          value_from {
+            config_map_ref {
+              key="STATIC_URL"
+              name="${kubernetes_config_map.frontend.data.0.name}:${var.static_port}"
+            }
+          }
+        },
+        {
+          name = "QUOTE_SERVICE_URL"
+          value_from {
+            config_map_ref {
+              key="QUOTE_SERVICE_URL"
+              name="${kubernetes_config_map.frontend.data.1.name}${var.quotes_port}"
+            }
+          }
+        },
+        {
+          name = "NEWSFEED_SERVICE_URL"
+          value_from {
+           config_map_ref {
+             key="NEWSFEED_SERVICE_URL"
+             name="${kubernetes_service.newsfeed_app.metadata.2.ip}${var.newsfeed_port}"
+           }
+          }
+        },
+        {
+          name="NEWSFEED_SERVICE_TOKEN"
+          value_from {
+            secret_ref {
+              key = "NEWSFEED_SERVICE_TOKEN"
+              name="${kubernetes_secret.newsfeed-secret.metadata.0.name}"
+            }
+          }
+        }]
       }
     }
   }

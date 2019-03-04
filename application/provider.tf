@@ -29,8 +29,9 @@ resource "kubernetes_config_map" "frontend" {
   }
 
   data {
-    QUOTE_SERVICE_URL = "${kubernetes_service.quotes_app.metadata.0.self_link}"
-    NEWSFEED_SERVICE_URL = "${kubernetes_service.newsfeed_app.metadata.0.self_link}"
+    STATIC_URL = "${kubernetes_service.static_app.metadata.0.ip}"
+    QUOTE_SERVICE_URL = "${kubernetes_service.quotes_app.metadata.0.ip}"
+    NEWSFEED_SERVICE_URL = "${kubernetes_service.newsfeed_app.metadata.0.ip}"
   }
 
   depends_on = ["kubernetes_namespace.microservices_app"]
